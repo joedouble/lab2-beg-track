@@ -43,17 +43,30 @@ function assert(expression, failureMessage) {
     third hour      |    3/hour        |        3         |
     fourth hour     |    4/hour        |        4         |
 
- TODO: First, make a constructor function, called Blob, that makes blobs.
+*/
 
- TODO: Next, create an instance of Blob named blob.
+/* TODO: First, make a constructor function, called Blob, that makes blobs.
+*/
+function Blob(name) {
+   this.name = name;
+}
 
- TODO: Then, use a loop to calculate how long it took the blob to finish
- with Dowington. */
+/* TODO: Next, create an instance of Blob named blob.
+*/
+var blob = new Blob("blob");
 
+/*TODO: Then, use a loop to calculate how long it took the blob to finish
+ with Dowington.*/
+var peopleRemaining = 1000;
+var consumptionRate = 1;
+var hoursSpentInDowington;  // TODO: assign me the value of the
+                                // above calculation (how long it took
+                                // the blob to eat Dowington)
 
-var hoursSpentInDowington; // TODO: assign me the value of the
-                           // above calculation (how long it took
-                           // the blob to eat Dowington)
+for (hoursSpentInDowington = 1, consumptionRate; peopleRemaining >= 0; hoursSpentInDowington++, consumptionRate++) {
+  peopleRemaining -= consumptionRate;
+  return hoursSpentInDowington;
+}
 
 // Now, write a method that takes a population for an arbitrary
 // town, and the starting consumption rate, and returns the number
@@ -62,7 +75,16 @@ var hoursSpentInDowington; // TODO: assign me the value of the
 function hoursToOoze(population, peoplePerHour) {
   // TODO: implement me based on the instructions above.
   // Be sure to then assign me to the Blob's prototype.
+  var hoursSpentInRandomTown;
+  this.peoplePerHour = peoplePerHour;
+  this.population = population;
+  for (hoursSpentInRandomTown = 1, peoplePerHour; population > 0; hoursSpentInRandomTown++, peoplePerHour++) {
+    population -= peoplePerHour;
+  }
+  return hoursSpentInRandomTown;
 }
+
+Blob.prototype.hoursToOoze = hoursToOoze;
 
 assert(blob.hoursToOoze(0, 1) === 0, 'no people means no time needed.');
 assert(blob.hoursToOoze(1000, 1) === hoursSpentInDowington,
@@ -86,33 +108,48 @@ var hello = {
 // speak, and method (that you'll place on the prototype) called
 // sayHello.
 
-function SentientBeing () {
-  // TODO: specify a home planet and a language
-  // you'll need to add parameters to this constructor
+function SentientBeing (homePlanet, nativeLanguage) {   // TODO: specify a home planet and a language
+  this.homePlanet = homePlanet;                         // you'll need to add parameters to this constructor
+  this.nativeLanguage = nativeLanguage;
 }
 
 // sb is a SentientBeing object
-function sayHello (sb) {
+function sayHello(sb) {
     // TODO: say hello prints out (console.log's) hello in the
     // language of the speaker, but returns it in the language
     // of the listener (the sb parameter above).
     // use the 'hello' object at the beginning of this exercise
     // to do the translating
-
+    console.log(hello[this.nativeLanguage]);
+    return hello[sb.nativelanguage];
     //TODO: put this on the SentientBeing prototype
   }
 
+SentientBeing.prototype.sayHello = sayHello;
+
 // TODO: create three SentientBeings, one for each language in the
 // 'hello' object above.
-var klingon = new SentientBeing(); // TODO: make a klingon
-var romulan = new SentientBeing(); // TODO: make a romulan
-var human = new SentientBeing(); // TODO: make a human
+var klingon = new SentientBeing('Qo"noS', "klingon"); // TODO: make a klingon
+var romulan = new SentientBeing("Romulus", "romulan"); // TODO: make a romulan
+var human = new SentientBeing("Earth", "federation standard"); // TODO: make a human
 
 assert(human.sayHello(klingon) === 'nuqneH',
-  'the klingon should hear nuqneH');
+ 'the klingon should hear nuqneH');
 
-// TODO: write five more assertions, to complete all the possible
-// greetings between the three types of sentient beings you created above.
+assert(human.sayHello(romulan) === "Jolan\"tru",
+ 'the romulan should hear Jolan\"tru');
+
+assert(romulan.sayHello(klingon) === 'nuqneH',
+ 'the klingon should hear nuqneH');
+
+assert(romulan.sayHello(human) === 'hello',
+ 'the human should hear hello');
+
+assert(klingon.sayHello(romulan) === "Jolan\"tru",
+  'the romulan should hear Jolan\"tru');
+
+assert(klingon.sayHello(human) === "hello",
+  'the human should hear hello');
 
 //*********************************************************
 // PROBLEM 3: Moar Loops. 20 points.
@@ -122,10 +159,23 @@ assert(human.sayHello(klingon) === 'nuqneH',
 //*********************************************************
 function max(array) {
   // TODO: return the largest number in the given array
+  var largestNumber = 0;
+  for (i = 0; i < array.length; i++) {
+    if (array[i] > largestNumber) {
+      largestNumber = array[i];
+    }
+  }
+  return largestNumber;
 }
 
 // TODO: write three more assertions
 assert(max([ 1, 3, 2 ]) === 3, '[1,3,2]');
+
+assert(max([ 5, 4, 9 ]) === 9, '[5,4,9]');
+
+assert(max([ 100, 13, 67 ]) === 100, '[100,31,67]');
+
+assert(max([ 33, 30, 29 ]) === 33, '[33,30,29]');
 
 function variablify(string) {
   // TODO: you are given a string with several words in it
@@ -135,11 +185,28 @@ function variablify(string) {
   // you might want to use these string methods:
   //  split(), charAt(), toUpperCase()
   // and this array method: join()
+  var stringArray = string.split(" ");
+  var camelCase = "";
+      camelCase += stringArray[0].toLowerCase();
+  for (var i = 1; i < stringArray.length; i++) {
+    var followingWord = stringArray[i];
+    camelCase += followingWord.charAt(0).toUpperCase();
+    for (var j = 1; j < followingWord.length; j++) {
+    camelCase += followingWord.charAt(j).toLowerCase();
+      }
+    }
+  return camelCase;
 }
 
 // TODO: write three more assertions
 assert(variablify('one two three') === 'oneTwoThree',
   'variablify(\'one two three\')');
+
+assert(variablify('whiskey foxtrot tango') === 'whiskeyFoxtrotTango',
+  'variablify(\'whiskey foxtrot tango\')');
+
+assert(variablify('Great Big World') === 'greatBigWorld',
+  'variablify(\'Great Big World\')');
 
 //*********************************************************
 // PROBLEM 4: Cleanup: 10 points
