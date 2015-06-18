@@ -53,19 +53,20 @@ function Blob(name) {
 
 /* TODO: Next, create an instance of Blob named blob.
 */
-var blob = new Blob("blob");
+var blob = new Blob(blob);
 
 /*TODO: Then, use a loop to calculate how long it took the blob to finish
  with Dowington.*/
 var peopleRemaining = 1000;
 var consumptionRate = 1;
-var hoursSpentInDowington;  // TODO: assign me the value of the
+var hoursSpentInDowington = 0;  // TODO: assign me the value of the
                                 // above calculation (how long it took
                                 // the blob to eat Dowington)
 
-for (hoursSpentInDowington = 1, consumptionRate; peopleRemaining >= 0; hoursSpentInDowington++, consumptionRate++) {
-  peopleRemaining -= consumptionRate;
-  return hoursSpentInDowington;
+for (var i = 1, j = consumptionRate; peopleRemaining > 0; i++, j++) {
+  hoursSpentInDowington = i;
+  consumptionRate = j;
+  peopleRemaining = peopleRemaining - consumptionRate;
 }
 
 // Now, write a method that takes a population for an arbitrary
@@ -75,20 +76,26 @@ for (hoursSpentInDowington = 1, consumptionRate; peopleRemaining >= 0; hoursSpen
 function hoursToOoze(population, peoplePerHour) {
   // TODO: implement me based on the instructions above.
   // Be sure to then assign me to the Blob's prototype.
-  var hoursSpentInRandomTown;
-  this.peoplePerHour = peoplePerHour;
-  this.population = population;
-  for (hoursSpentInRandomTown = 1, peoplePerHour; population > 0; hoursSpentInRandomTown++, peoplePerHour++) {
+  var hoursSpentInRandomTown = 0;
+  var population = population;
+  var peoplePerHour = peoplePerHour;
+  for (var i = 1, j = peoplePerHour; population > 0; i++, j++) {
+    hoursSpentInRandomTown = i;
+    peoplePerHour = j;
     population -= peoplePerHour;
   }
   return hoursSpentInRandomTown;
 }
+
 
 Blob.prototype.hoursToOoze = hoursToOoze;
 
 assert(blob.hoursToOoze(0, 1) === 0, 'no people means no time needed.');
 assert(blob.hoursToOoze(1000, 1) === hoursSpentInDowington,
   'hoursSpentInDowington should match hoursToOoze\'s result for 1000');
+assert(blob.hoursToOoze(1000, 0) === 46, 'the blob didn\'s eat anybody the first hour.');
+assert(blob.hoursToOoze(100000, 1) === 447, 'it\'ll take 447 hours for the blob to eat its way through the town.');
+assert(blob.hoursToOoze(100000000, 1000) === 13178, 'it\'ll take 13178 hours to eat up the town.');
 
 // TODO: write three more assertions like the two above, testing out
 // the hoursToOoze method.
@@ -108,7 +115,7 @@ var hello = {
 // speak, and method (that you'll place on the prototype) called
 // sayHello.
 
-function SentientBeing (homePlanet, nativeLanguage) {   // TODO: specify a home planet and a language
+function SentientBeing(homePlanet, nativeLanguage) {   // TODO: specify a home planet and a language
   this.homePlanet = homePlanet;                         // you'll need to add parameters to this constructor
   this.nativeLanguage = nativeLanguage;
 }
@@ -121,7 +128,7 @@ function sayHello(sb) {
     // use the 'hello' object at the beginning of this exercise
     // to do the translating
     console.log(hello[this.nativeLanguage]);
-    return hello[sb.nativelanguage];
+    return hello[sb.nativeLanguage];
     //TODO: put this on the SentientBeing prototype
   }
 
@@ -136,8 +143,8 @@ var human = new SentientBeing("Earth", "federation standard"); // TODO: make a h
 assert(human.sayHello(klingon) === 'nuqneH',
  'the klingon should hear nuqneH');
 
-assert(human.sayHello(romulan) === "Jolan\"tru",
- 'the romulan should hear Jolan\"tru');
+assert(human.sayHello(romulan) === 'Jolan\'tru',
+ 'the romulan should hear Jolan\'tru');
 
 assert(romulan.sayHello(klingon) === 'nuqneH',
  'the klingon should hear nuqneH');
@@ -145,8 +152,8 @@ assert(romulan.sayHello(klingon) === 'nuqneH',
 assert(romulan.sayHello(human) === 'hello',
  'the human should hear hello');
 
-assert(klingon.sayHello(romulan) === "Jolan\"tru",
-  'the romulan should hear Jolan\"tru');
+assert(klingon.sayHello(romulan) === 'Jolan\'tru',
+  'the romulan should hear Jolan\'tru');
 
 assert(klingon.sayHello(human) === "hello",
   'the human should hear hello');
@@ -160,7 +167,7 @@ assert(klingon.sayHello(human) === "hello",
 function max(array) {
   // TODO: return the largest number in the given array
   var largestNumber = 0;
-  for (i = 0; i < array.length; i++) {
+  for (var i = 0; i < array.length; i++) {
     if (array[i] > largestNumber) {
       largestNumber = array[i];
     }
